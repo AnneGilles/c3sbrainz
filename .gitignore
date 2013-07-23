@@ -1,0 +1,4 @@
+c3sbrainz.egg-info/
+c3sbrainz.sqlite
+*.pyc
+*~
