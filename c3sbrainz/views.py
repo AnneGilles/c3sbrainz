@@ -3,11 +3,47 @@ from pyramid.view import view_config
 
 from sqlalchemy.exc import DBAPIError
 
+import musicbrainzngs
+
 from .models import (
     DBSession,
     MyModel,
     )
 
+@view_config(route_name='status', renderer='templates/status.pt')
+def status_view(request):
+    bar = 25
+    output = ''
+    hostname = '192.168.54.101:5000'
+    musicbrainzngs.set_hostname(hostname)
+    musicbrainzngs.auth("user", "password")
+    musicbrainzngs.set_useragent(
+        'c3sbrainz',
+        '0.1a',
+        'dev@c3s.cc'
+        )
+    artistid = "952a4205-023d-4235-897c-6fdb6f58dfaa"
+    #import pdb
+    #pdb.set_trace()
+    print(dir(musicbrainzngs))
+    #output = dir(musicbrainzngs)
+    output = musicbrainzngs.get_artist_by_id(artistid)
+    print  musicbrainzngs.get_artist_by_id(artistid)
+    return {
+        'foo': 'foo',
+        'bar': bar,
+        'hostname': hostname,
+        'output': output
+        }
+
+@view_config(route_name='search', renderer='templates/search.pt')
+def search_view(request):
+    bar = 25
+    #import pdb
+    #pdb.set_trace()
+    return {
+        'foo': 'foo',
+        'bar': bar}
 
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
 def my_view(request):
